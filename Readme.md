@@ -1,7 +1,7 @@
 # My Containerized Guestbook Application
 
 ## Project Overview
-This project deploys a multi-container web application using a Python Flask frontend and a Redis database. Users can submit guestbook messages through a simple form; entries are saved to and retrieved from a backend Redis instance running in its own container.
+I built this project to deploy a multi-container web application using a Python Flask frontend and a Redis database. Users can submit guestbook messages through a simple form; entries are saved to and retrieved from a backend Redis instance running in its own container.
 
 ## Architecture Diagram
 ```text
@@ -80,7 +80,7 @@ volumes:
 
 ## Build Steps
 
-To build the custom Flask frontend image from the local Dockerfile:
+To build my custom Flask frontend image from the local Dockerfile:
 
 ```bash
 docker compose build
@@ -112,19 +112,19 @@ docker compose build
 
 ## Docker Compose Explanation
 
-Docker Compose manages the lifecycle of both services from a single `docker-compose.yml` file. Rather than running containers manually with long `docker run` commands and hand-crafted network flags, Compose handles environment variables, build contexts, port mappings, and dependencies declaratively.
+I use Docker Compose to manage the lifecycle of both services from a single `docker-compose.yml` file. Rather than running containers manually with long `docker run` commands and hand-crafted network flags, Compose handles environment variables, build contexts, port mappings, and dependencies declaratively.
 
 ## Docker Network Explanation
 
-Both containers communicate over a custom bridge network named `guestbook-network`. External traffic can't reach Redis directly through this network. The Flask app connects to Redis using the service name `redis` as the hostname, so no hardcoded IP addresses are needed.
+I isolated both containers on a custom bridge network named `guestbook-network`, which blocks external traffic from reaching Redis directly. The Flask app connects to Redis using the service name `redis` as the hostname, so no hardcoded IP addresses are needed.
 
 ## Docker Volume Explanation
 
-A named volume called `redis-data` is mounted to `/data` inside the Redis container. This keeps guestbook entries on the host regardless of what happens to the container — restarts, replacements, and full teardowns all leave the data intact.
+I mounted a named volume called `redis-data` to `/data` inside the Redis container. This keeps guestbook entries on the host regardless of what happens to the container — restarts, replacements, and full teardowns all leave the data intact.
 
 ## Docker Scout Results
 
-Image analyzed: `kyemtingguestbook-app-web:latest`
+I ran Docker Scout against `kyemtingguestbook-app-web:latest`:
 
 * **Base image:** `python:3.10-slim` (linux/amd64)
 * **Packages audited:** 150 total, 12 with flagged vulnerabilities
@@ -140,5 +140,7 @@ Image analyzed: `kyemtingguestbook-app-web:latest`
 **Remediation:** Upgrading the base image to `python:3.14-slim` should clear most of these. For quicker fixes, update `pip` to `>=23.3` and `wheel` to `>=0.46.2` directly in the build steps.
 
 ## Docker Hub Image
+
+I pushed the image to my public repository:
 
 * **Repository:** [https://hub.docker.com/r/jessekyemting/guestbook](https://hub.docker.com/r/jessekyemting/guestbook)
