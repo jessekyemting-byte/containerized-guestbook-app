@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Frontend Flask Web App
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      - guestbook-network
+    depends_on:
+      - redis
+
+  # Database Service
+  redis:
+    image: "redis:alpine"
+    networks:
+      - guestbook-network
+    volumes:
+      - redis-data:/data
+
+networks:
+  guestbook-network:
+    driver: bridge
+
+volumes:
+  redis-data:
